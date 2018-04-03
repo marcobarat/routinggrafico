@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+ 
+    <Dialog title = "INFORMATION">
+        <l:Grid defaultSpan = "L12 M12 S12" width = "300px" id = "vl">
+            <l:content >
+                <Button text="+" type="Transparent" press="onAdd"/>
+
+                <f:SimpleForm id="academyform"
+                              editable="false"
+                              layout="ResponsiveGridLayout"
+                              title="Aggiungi capi"
+                >
+                    <f:content>
+                        <Input id = "capo1"/>
+                    </f:content>
+                </f:SimpleForm>
+            </l:content>
+        </l:Grid>
+        <buttons>
+            <Button text = "CLOSE" press = "onExit" type = "Reject"/>
+            <Button text = "SAVE" press = "onSave" type = "Accept"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

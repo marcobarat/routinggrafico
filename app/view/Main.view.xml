@@ -1,0 +1,45 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.suite.ui.commons"
+    controllerName="myapp.controller.Main">
+    <m:Page>
+        <m:HBox>
+            <m:InputListItem label="Select ShopOrder ID:" >
+                <m:Select items="{/prova}" change="onPress">
+                    <core:Item key="{ID}" text="{ID}" />
+
+                </m:Select>
+            </m:InputListItem>
+        </m:HBox>
+        <ProcessFlow
+            id="processflow"
+            scrollable="false"
+            nodePress="onNodePress"
+            nodes="{/flow/nodes}"
+            lanes="{/flow/lanes}">
+            <nodes>
+                <ProcessFlowNode
+                    laneId="{lane}"
+                    nodeId="{id}"
+                    title="{title}"
+                    titleAbbreviation="{titleAbbreviation}"
+                    isTitleClickable="{isTitleClickable}"
+                    children="{children}"
+                    state="{state}"
+                    stateText="{stateText}"
+                    texts="{texts}"
+                    highlighted="{highlighted}"
+                    focused="{focused}" />
+            </nodes>
+            <lanes>
+                <ProcessFlowLaneHeader
+                    laneId="{id}"
+                    iconSrc="{icon}"
+                    text="{label}"
+                    position="{position}" />
+            </lanes>
+        </ProcessFlow>
+    </m:Page>
+</mvc:View>

@@ -1,0 +1,89 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "lane": "10",
+      "title": "OP1",
+      "state": "Positive",
+      "stateText": "Phase 10",
+      "children": [
+        2,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "2",
+      "lane": "20",
+      "title": "OP2",
+      "state": "Positive",
+      "stateText": "Phase 20",
+      "children": [
+        
+      ]
+    },
+    {
+      "id": "3",
+      "lane": "20",
+      "title": "OP3",
+      "state": "Positive",
+      "stateText": "Phase 20",
+      "children": [
+        
+      ]
+    },
+    {
+      "id": "8",
+      "lane": "30",
+      "title": "DEPO",
+      "state": "Positive",
+      "stateText": "Phase 30",
+      "children": [
+        
+      ]
+    },
+    {
+      "id": "9",
+      "lane": "30",
+      "title": "INSE",
+      "state": "Positive",
+      "stateText": "Phase 30",
+      "children": [
+        
+      ]
+    },
+    {
+      "id": "10",
+      "lane": "30",
+      "title": "CONF",
+      "state": "Positive",
+      "stateText": "Phase 30",
+      "children": [
+        
+      ]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "10",
+      "icon": "sap-icon://retail-store",
+      "label": "Test routing 1",
+      "position": 0,
+      "state": "Positive"
+    },
+    {
+      "id": "20",
+      "icon": "sap-icon://retail-store",
+      "label": "Test routing 1",
+      "position": 1,
+      "state": "Positive"
+    },
+    {
+      "id": "30",
+      "icon": "sap-icon://retail-store",
+      "label": "Test routing 1",
+      "position": 2,
+      "state": "Positive"
+    }
+  ]
+}

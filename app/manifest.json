@@ -1,0 +1,110 @@
+{
+    "_version": "1.1.0",
+    "sap.app": {
+        "id": "myapp",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "title": "{{myapp.title}}",
+        "description": "{{myapp.description}}",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "offline": true
+    },
+    "sap.ui": {
+        "_version": "1.1.0",
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": false
+        },
+        "supportedThemes": [
+            "sap_hcb",
+            "sap_bluecrystal"
+        ]
+    },
+    "sap.ui5": {
+        "_version": "1.1.0",
+        "resources": {
+            "css": [{
+                "uri": "css/style.css",
+                "id": "customstyle"
+            }]
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "myapp.i18n.i18n"
+                }
+            }
+        },
+        "dependencies": {
+            "minUI5Version": "1.30.0",
+            "libs": {
+                "sap.m": {
+                    "minVersion": "1.30.0"
+                },
+                "sap.ui.commons": {
+                    "minVersion": "1.30.0"
+                },
+                "sap.ui.layout": {
+                    "minVersion": "1.30.0"
+                }
+            }
+        },
+        "rootView": "myapp.view.App",
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewPath": "myapp",
+                "controlId": "rootControl",
+                "controlAggregation": "pages",
+                "viewType": "XML"
+            },
+            "routes": [{
+                "name": "main",
+                "pattern": "",
+                "target": "main"
+            }, {
+                "name": "insertclienti",
+                "pattern": "insertclienti",
+                "target": "insertclienti"
+            },{
+                "name": "clienti",
+                "pattern": "clienti",
+                "target": "clienti"
+            }],
+            "targets": {
+                "main": {
+                    "viewName": "view.Main",
+                    "viewLevel": 0
+                },
+                "insertclienti": {
+                    "viewName": "view.insertclienti",
+                    "viewLevel": 1
+                },
+                "clienti": {
+                    "viewName": "view.clienti",
+                    "viewLevel": 1
+                }
+            }
+        },
+        "config": {
+            "remoteDS": "/sap/opu/odata/SAP/ZAPP1_SRV/"
+        }
+    }
+}
