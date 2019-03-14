@@ -18,9 +18,7 @@
       "title": "OP2",
       "state": "Positive",
       "stateText": "Phase 20",
-      "children": [
-        
-      ]
+      "children": [8, 9, 10]
     },
     {
       "id": "3",
@@ -28,9 +26,7 @@
       "title": "OP3",
       "state": "Positive",
       "stateText": "Phase 20",
-      "children": [
-        
-      ]
+      "children": [8, 9, 10]
     },
     {
       "id": "8",

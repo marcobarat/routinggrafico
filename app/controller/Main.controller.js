@@ -1,97 +1,62 @@
-sap.ui.define(['jquery.sap.global', 'sap/suite/ui/commons/library', 'sap/ui/core/mvc/Controller', 'sap/ui/model/json/JSONModel', 'sap/m/MessageToast'],
-        function (jQuery, SuiteLibrary, Controller, JSONModel, MessageToast) {
+sap.ui.define([
+    'jquery.sap.global',
+    'sap/suite/ui/commons/library',
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/MessageToast',
+    'myapp/controller/Library'
+],
+        function (jQuery, SuiteLibrary, Controller, JSONModel, MessageToast, Library) {
             "use strict";
+
             var MainController = Controller.extend("myapp.controller.Main", {
+
+                modelFlow: new JSONModel(),
+                processFlow: null,
+
                 onInit: function () {
-
-                    var sDataPath = jQuery.sap.getModulePath("myapp.model", "/ProcessFlowNodes.json");
-
-                    var oModel = new JSONModel();
-                    this.getView().setModel(oModel);
-
-
-
-                    var that = this;
-
-                    jQuery.ajax({
-                        dataType: "json",
-                        url: "model/ProcessFlowNodes.json",
-                        async: false,
-                        success: function (oData) {
-                            that.getView().getModel().setProperty("/flow", oData);
-                            //that.oProcessFlow = this.getView().byId("processflow");
-                            //that.oProcessFlow.updateModel();
-                        }
-                    });
-                    jQuery.ajax({
-                        url: "/XMII/Illuminator?QueryTemplate=ACADPROD/Accademy/xacgetallsid&Content-Type=text/json",
-                        method: "GET",
-                        async: false,
-                        success: function (oData) {
-                            that.getView().getModel().setProperty("/prova", oData.Rowsets.Rowset["0"].Row);
-
-                        },
-                        error: function (oData) {
-                            that.error(oData);
-                        }
-                    });
-
-                    jQuery.ajax({
-                        url: "/XMII/Illuminator?QueryTemplate=ACADPROD/Accademy/xacgetallsid&Content-Type=text/json",
-                        method: "GET",
-                        async: false,
-                        success: function (oData) {
-                            that.getView().getModel().setProperty("/prova", oData.Rowsets.Rowset["0"].Row);
-
-                        },
-                        error: function (oData) {
-                            that.error(oData);
-                        }
-                    });
-
-
-
+                    var link = "model/ProcessFlowNodes_1.json";
+                    Library.AjaxCallerData(link, this.SUCCESSFlowUpload.bind(this), this.FAILUREFlowUpload.bind(this));
                 },
 
-                onOnError: function (event) {
-                    MessageToast.show("Exception occurred: " + event.getParameters().text);
+                SUCCESSFlowUpload: function (Jdata) {
+                    this.modelFlow.setProperty("/flow", Jdata);
+                    this.GetIDs();
                 },
+                FAILUREFlowUpload: function () {
+                    MessageToast.show("Caricamento modello flusso fallito!", {duration: 3000});
+                },
+                GetIDs: function () {
+                    var link = "/XMII/Illuminator?QueryTemplate=ACADPROD/Accademy/xacgetallsid&Content-Type=text/json";
+                    Library.AjaxCallerData(link, this.SUCCESSGetIDs.bind(this), this.FAILUREGetIDs.bind(this));
+                },
+                SUCCESSGetIDs: function (Jdata) {
+                    this.modelFlow.setProperty("/prova", Jdata.Rowsets.Rowset["0"].Row);
+                    this.getView().setModel(this.modelFlow);
+                },
+                FAILUREGetIDs: function () {
+                    MessageToast.show("Caricamento IDs fallito!", {duration: 3000});
+                },
+
 
                 onNodePress: function (event) {
                     MessageToast.show("Node " + event.getParameters().getNodeId() + " has been clicked.");
                 },
-
-                onZoomIn: function () {
-                    this.oProcessFlow.zoomIn();
-
-                    MessageToast.show("Zoom level changed to: " + this.oProcessFlow.getZoomLevel());
-                },
-
-                onZoomOut: function () {
-                    this.oProcessFlow.zoomOut();
-
-                    MessageToast.show("Zoom level changed to: " + this.oProcessFlow.getZoomLevel());
-                },
                 onPress: function (evt) {
                     var sId = evt.getSource().getSelectedKey();
-                    var that = this;
-                    jQuery.ajax({
-                        url: "/XMII/Runner?Transaction=ACADPROD/Accademy/getRoutings&Content-Type=text/xml&sid=" + sId + "&OutputParameter=JSON",
-                        method: "GET",
-                        dataType: "xml",
-                        async: false,
-                        success: function (oData) {
-                            that.getView().getModel().setProperty("/flow", JSON.parse(jQuery(oData).find("Row").text()));
-                            that.oProcessFlow = that.getView().byId("processflow");
-                            that.oProcessFlow.updateModel();
-                        },
-                        error: function (oData) {
-                            that.error(oData);
-                        }
-                    });
+                    var link = "/XMII/Runner?Transaction=ACADPROD/Accademy/getRoutings&Content-Type=text/xml&sid=" + sId + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSOnPress.bind(this), this.FAILUREOnPress.bind(this), "xml");
+                },
+                SUCCESSOnPress: function (Jdata) {
+                    this.getView().getModel().setProperty("/flow", JSON.parse(jQuery(Jdata).find("Row").text()));
+                    this.processFlow = this.getView().byId("processflow");
+                    this.processFlow.updateModel();
+                },
+                FAILUREOnPress: function () {
+                    MessageToast.show("Caricamento Routings fallito!", {duration: 3000});
                 },
                 onUpdateModel: function () {
-                    var aNodes = this.oProcessFlow.getNodes();
+                    var aNodes = this.processFlow.getNodes();
                     aNodes[0].setState(SuiteLibrary.ProcessFlowNodeState.Planned);
                     aNodes[1].setState(SuiteLibrary.ProcessFlowNodeState.Negative);
                     aNodes[1].setStateText("Negative");
@@ -100,7 +65,7 @@ sap.ui.define(['jquery.sap.global', 'sap/suite/ui/commons/library', 'sap/ui/core
                     aNodes[2].setStateText("State Text changed");
                     aNodes[2].setTitle("Invoice OK");
 
-                    this.oProcessFlow.updateNodesOnly();
+                    this.processFlow.updateNodesOnly();
                     MessageToast.show("Model has been updated.");
                 }
             });
